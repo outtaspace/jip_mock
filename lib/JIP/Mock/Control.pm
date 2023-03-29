@@ -376,7 +376,7 @@ Testing module:
     # 24
     TestMe::tratata();
 
-    # { triatata => 1 }
+    # { tratata => 1 }
     $control->times();
 
     # [
@@ -505,7 +505,7 @@ Build new L<JIP::Mock::Control> object.
 
     $control->override();
 
-    Override a method.
+Override a method.
 
 =head1 DIAGNOSTICS
 
