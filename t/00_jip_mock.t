@@ -13,10 +13,12 @@ BEGIN {
 
 ## no critic (TestingAndDebugging::RequireTestLabels)
 
-package TestMe {
-    use strict;
-    use warnings;
-}
+package TestMe;
+
+use strict;
+use warnings;
+
+package main;
 
 subtest 'Require some module' => sub {
     require_ok 'JIP::Mock';
