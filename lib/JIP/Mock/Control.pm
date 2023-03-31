@@ -350,7 +350,7 @@ __END__
 
 =head1 NAME
 
-JIP::Mock::Control
+JIP::Mock::Control - Override subroutines in a module
 
 =head1 VERSION
 
@@ -479,33 +479,41 @@ L<JIP::Mock::Control> implements the following attributes.
 
 =head2 package
 
-    $control->package(); # name of package
+    $string = $control->package();
+
+Get the name of the package controlled by this object.
 
 =head2 events
 
-    $control->events(); # arrayref
+    $arrayref = $control->events();
+
+Returns an array of all the calls to the mocked module.
 
 =head2 times
 
-    $control->times(); # hashref
+    $hashref = $control->times();
+
+Returns a hash where keys are method names, and values are the number of times the method has been called.
 
 =head2 want_array
 
-    $control->want_array(); # undef/1/q{}
+    $bool = $control->want_array();
+
+Track (or not track) invocation context. Disabled by default.
 
 =head1 SUBROUTINES/METHODS
 
 =head2 new
 
-    my $control = JIP::Mock::Control->new();
+    $control = JIP::Mock::Control->new();
 
 Build new L<JIP::Mock::Control> object.
 
 =head2 override
 
-    $control->override();
+    $control->override( name => sub { ... } );
 
-Override a method.
+Temporarily replaces one or more subroutines in the mocked module.
 
 =head1 DIAGNOSTICS
 

@@ -27,7 +27,7 @@ __END__
 
 =head1 NAME
 
-JIP::Mock
+JIP::Mock - Override subroutines in a module
 
 =head1 VERSION
 
@@ -63,13 +63,13 @@ Build new L<JIP::Mock::Control> object.
 
     use JIP::Mock;
 
-    my $control = JIP::Mock::take_control( package => 'TestMe' );
+    $control = JIP::Mock::take_control( package => 'TestMe' );
 
 or exported on demand via
 
     use JIP::Mock qw(take_control);
 
-    my $control = take_control( package => 'TestMe' );
+    $control = take_control( package => 'TestMe' );
 
 =head1 DIAGNOSTICS
 

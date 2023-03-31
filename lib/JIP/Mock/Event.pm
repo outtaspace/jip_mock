@@ -51,7 +51,7 @@ __END__
 
 =head1 NAME
 
-JIP::Mock::Event
+JIP::Mock::Event - Object representation of an individual call to a mocked method
 
 =head1 VERSION
 
@@ -79,25 +79,27 @@ L<JIP::Mock::Event> implements the following attributes.
 
 =head2 method
 
-    my $method = $event->method();
+    $string = $event->method();
+
+Method name.
 
 =head2 arguments
 
-    my $arguments = $event->arguments();
+    $arrayref = $event->arguments();
 
-Comment about arguments
+Returns a list of the arguments passed to C<method>.
 
 =head2 want_array
 
-    my $want_array = $event->want_array();
+    $want_array = $event->want_array(); # 1/q{}/undef
 
-Comment about arguments
+Returns result of built in function C<wantarray>.
 
 =head2 times
 
-    my $times = $event->times();
+    $count = $event->times();
 
-Comment about times
+The number of times the C<method> was called.
 
 =head1 DIAGNOSTICS
 
