@@ -534,6 +534,106 @@ subtest 'FizzBuzz example' => sub {
     is_deeply $sut->times(), { tratata => scalar @results };
 };
 
+subtest 'call_original() when validation failed' => sub {
+    my @cases = (
+        {
+            args  => [],
+            error => qr{Cannot call original: name is not present!},
+            name  => 'name is not exists',
+        },
+        {
+            args  => [undef],
+            error => qr{Cannot call original: name is not present!},
+            name  => 'name is not defined',
+        },
+        {
+            args  => [q{}],
+            error => qr{Cannot call original: name is not present!},
+            name  => 'name is an empty string',
+        },
+        {
+            args  => ['ololo'],
+            error => qr{Cannot call original: cannot find sub "ololo" by name!},
+            name  => 'name is unknown',
+        },
+    );
+
+    foreach my $case (@cases) {
+        my $sut = init_sut();
+
+        $sut->override(
+            tratata => sub {
+                pass 'tratata()';
+
+                return NEW_ANSWER;
+            },
+        );
+
+        eval {
+            $sut->call_original( @{ $case->{args} } );
+
+            return;
+        };
+
+        like $EVAL_ERROR, $case->{error}, $case->{name};
+    }
+};
+
+subtest 'call_original() in void context' => sub {
+    my $sut = init_sut();
+
+    $sut->override(
+        tratata => sub {
+            pass 'tratata()';
+
+            return NEW_ANSWER;
+        },
+    );
+
+    $sut->call_original('tratata');
+
+    is_deeply $sut->times(), {};
+    is_deeply $sut->events(), [];
+};
+
+subtest 'call_original() in list context' => sub {
+    my $sut = init_sut();
+
+    $sut->override(
+        tratata => sub {
+            pass 'tratata()';
+
+            return NEW_ANSWER;
+        },
+    );
+
+    my @results = $sut->call_original('tratata');
+
+    is_deeply \@results, [ORIGINAL_ANSWER];
+
+    is_deeply $sut->times(), {};
+    is_deeply $sut->events(), [];
+};
+
+subtest 'call_original() in scalar context' => sub {
+    my $sut = init_sut();
+
+    $sut->override(
+        tratata => sub {
+            pass 'tratata()';
+
+            return NEW_ANSWER;
+        },
+    );
+
+    my $result = $sut->call_original('tratata');
+
+    is $result, ORIGINAL_ANSWER;
+
+    is_deeply $sut->times(), {};
+    is_deeply $sut->events(), [];
+};
+
 done_testing();
 
 sub init_sut {

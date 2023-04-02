@@ -70,6 +70,38 @@ sub override {
     return;
 } ## end sub override
 
+sub call_original {
+    my ( $self, $name, @arguments ) = @ARG;
+
+    if ( my $error = $self->_validate_call_original($name) ) {
+        croak 'Cannot call original: ' . $error;
+    }
+
+    my $want_array   = wantarray;
+    my $original_sub = $self->_get_original($name);
+
+    # void context
+    if ( !defined $want_array ) {
+        $original_sub->(@arguments);
+
+        return;
+    }
+
+    # is looking for a list value
+    elsif ($want_array) {
+        my @results = $original_sub->(@arguments);
+
+        return @results;
+    }
+
+    # is looking for a scalar
+    else {
+        my $result = $original_sub->(@arguments);
+
+        return $result;
+    }
+} ## end sub call_original
+
 sub DESTROY {
     my ($self) = @ARG;
 
@@ -106,6 +138,16 @@ sub _validate_overriding {
     return if _is_coderef($new_sub);
 
     return sprintf 'new sub of "%s" is not CODE reference!', $name;
+}
+
+sub _validate_call_original {
+    my ( $self, $name ) = @ARG;
+
+    return 'name is not present!' if !length $name;
+
+    return if $self->_get_original($name);
+
+    return sprintf 'cannot find sub "%s" by name!', $name;
 }
 
 sub _instantiate {
@@ -514,6 +556,12 @@ Build new L<JIP::Mock::Control> object.
     $control->override( name => sub { ... } );
 
 Temporarily replaces one or more subroutines in the mocked module.
+
+=head2 call_original
+
+    $control->call_original( 'name', @arguments );
+
+Calls the original (unmocked) subroutine.
 
 =head1 DIAGNOSTICS
 
