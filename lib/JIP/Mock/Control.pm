@@ -9,7 +9,7 @@ use Scalar::Util qw(reftype blessed);
 
 use JIP::Mock::Event;
 
-our $VERSION = 'v0.0.2';
+our $VERSION = 'v0.0.3';
 
 sub new {
     my ( $class, %param ) = @ARG;
@@ -396,7 +396,7 @@ JIP::Mock::Control - Override subroutines in a module
 
 =head1 VERSION
 
-This document describes L<JIP::Mock::Control> version C<v0.0.2>.
+This document describes L<JIP::Mock::Control> version C<v0.0.3>.
 
 =head1 SYNOPSIS
 
